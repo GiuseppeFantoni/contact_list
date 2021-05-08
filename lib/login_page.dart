@@ -3,6 +3,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lista_contatos/contact_list_page.dart';
 import 'package:lista_contatos/home_page.dart';
+import 'package:lista_contatos/services/authentication_service.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -192,7 +194,12 @@ class _LoginPageState extends State<LoginPage> {
                                         color: Colors.green,
                                       )),
                                   onTap: () {
-                                    showAlertDialogError();
+                                    context
+                                        .read<AuthenticationService>()
+                                        .signIn(
+                                          login: login.trim(),
+                                          password: password.trim(),
+                                        );
                                   },
                                 ),
                               ),

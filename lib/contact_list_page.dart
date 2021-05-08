@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import './manager/contact_list_manager.dart';
 
-class ContactList extends HookWidget {
+class ContactList extends StatefulWidget {
+  @override
+  _ContactListState createState() => _ContactListState();
+}
+
+class _ContactListState extends State<ContactList> {
+  List contactsList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDatabaseList();
+  }
+
+  fetchDatabaseList() async {
+    dynamic resultant = await ContactListManager().getListFirebase();
+
+    if (resultant == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        contactsList = resultant;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _numberString = useState([]);
-
-    useEffect(
-      () {
-        var result = getContactList(1);
-        _numberString.value = result;
-      },
-      [],
-    );
-
-    void atualizarLista() {
-      var result = getContactList(1);
-      _numberString.value = result;
-    }
-
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          atualizarLista();
-        },
-        child: const Icon(Icons.navigation),
-        backgroundColor: Colors.green,
-      ),
       body: new ListView.separated(
-        itemCount: _numberString.value.length,
+        itemCount: contactsList.length,
         padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
@@ -42,8 +44,8 @@ class ContactList extends HookWidget {
             child: Center(
                 child: Column(
               children: [
-                Text(_numberString.value[index]['nome']),
-                Text("giuseppeFant07@gmail.com"),
+                Text(contactsList[index]['name']),
+                Text(contactsList[index]['email']),
               ],
             )),
           );
