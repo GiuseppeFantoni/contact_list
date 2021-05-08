@@ -1,4 +1,4 @@
-package com.example.lista_contatos
+package io.contactlist.withfirebase
 
 import io.flutter.embedding.android.FlutterActivity
 
