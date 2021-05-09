@@ -15,7 +15,6 @@ class ContactListService {
     var list = [];
     if (response.length == 0) return [];
     response.forEach((element) {
-      print(element);
       list.add({
         "name": element["name"],
         "email": element["email"],
@@ -26,6 +25,21 @@ class ContactListService {
         "isExpanded": false
       });
     });
+    return list;
+  }
+
+  Future getContactListWithId(docId) async {
+    var document = FirebaseFirestore.instance.collection('contacts').doc(docId);
+    return document.get().then((value) => checkresponseItem(value));
+  }
+
+  checkresponseItem(item) {
+    var list = {};
+    list['name'] = item["name"];
+    list['email'] = item["email"];
+    list["telefone"] = item["telefone"];
+    list["cep"] = item["cep"];
+    list["endereco"] = item["endereco"];
     return list;
   }
 }

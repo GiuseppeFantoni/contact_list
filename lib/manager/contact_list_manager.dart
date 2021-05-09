@@ -31,13 +31,14 @@ class ContactListManager {
     CollectionReference contacts =
         FirebaseFirestore.instance.collection('contacts');
 
-    print(contact);
-    print(id);
-
     return contacts
         .doc(id)
         .update(contact)
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  Future getContactListWithId(docId) async {
+    return await ContactListService().getContactListWithId(docId);
   }
 }

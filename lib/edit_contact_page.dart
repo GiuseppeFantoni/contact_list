@@ -16,11 +16,38 @@ class EditContactPage extends StatefulWidget {
 }
 
 class _EditContactPageState extends State<EditContactPage> {
+  dynamic contact;
+
   var name = TextEditingController(text: '');
   var email = TextEditingController(text: '');
   var cep = TextEditingController(text: '');
   var endereco = TextEditingController(text: '');
   var telefone = TextEditingController(text: '');
+
+  @override
+  void initState() {
+    super.initState();
+    getContactWithId();
+  }
+
+  getContactWithId() async {
+    dynamic resultant =
+        await ContactListManager().getContactListWithId(widget.docID);
+
+    if (resultant == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        contact = resultant;
+      });
+    }
+
+    name.text = contact["name"];
+    email.text = contact["email"];
+    cep.text = contact["cep"];
+    telefone.text = contact["telefone"];
+    endereco.text = contact["endereco"];
+  }
 
   @override
   void dispose() {
@@ -85,7 +112,7 @@ class _EditContactPageState extends State<EditContactPage> {
         headerAnimationLoop: false,
         animType: AnimType.SCALE,
         dialogType: DialogType.SUCCES,
-        title: 'Contato Inserido com sucesso!',
+        title: 'Contato Atualizado com sucesso!',
       )..show();
     } else {
       return AwesomeDialog(
