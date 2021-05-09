@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../services/contact_list_service.dart';
 
 class ContactListManager {
@@ -15,5 +14,16 @@ class ContactListManager {
         .delete()
         .then((value) => print("User Deleted"))
         .catchError((error) => print("Failed to delete user: $error"));
+  }
+
+  Future<void> addUser(contact) {
+    CollectionReference contacts =
+        FirebaseFirestore.instance.collection('contacts');
+
+    return contacts
+        .doc(contact['doc_id'])
+        .set(contact)
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 }
