@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lista_contatos/components/body_list.dart';
 import './manager/contact_list_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ContactList extends StatefulWidget {
   @override
@@ -22,6 +24,7 @@ class _ContactListState extends State<ContactList> {
       print('Unable to retrieve');
     } else {
       setState(() {
+        print(resultant);
         contactsList = resultant;
       });
     }
@@ -29,28 +32,37 @@ class _ContactListState extends State<ContactList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: new ListView.separated(
-        itemCount: contactsList.length,
-        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
-        separatorBuilder: (BuildContext context, int index) => Divider(),
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            height: 50,
-            child: Center(
-                child: Column(
-              children: [
-                Text(contactsList[index]['name']),
-                Text(contactsList[index]['email']),
-              ],
-            )),
-          );
-        },
-      ),
+    return ListView(
+      children: <Widget>[
+        ExpansionPanelList(
+          expansionCallback: (int index, bool isExpanded) {
+            setState(() {
+              contactsList[index]["isExpanded"] =
+                  !contactsList[index]["isExpanded"];
+            });
+          },
+          children: contactsList.map((item) {
+            return ExpansionPanel(
+              headerBuilder: (BuildContext context, bool isExpanded) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    item['name'],
+                    style: GoogleFonts.petrona(
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                );
+              },
+              isExpanded: item["isExpanded"],
+              body: BodyList(item),
+            );
+          }).toList(),
+        )
+      ],
     );
   }
 }
