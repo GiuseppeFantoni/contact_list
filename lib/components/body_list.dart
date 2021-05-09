@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class BodyList extends StatelessWidget {
   final dynamic itemLista;
+  final deleteUser;
 
-  BodyList(this.itemLista);
+  BodyList(this.itemLista, this.deleteUser);
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +107,14 @@ class BodyList extends StatelessWidget {
                     Icons.edit_outlined,
                     color: Colors.grey[600],
                   ),
-                  Icon(
-                    Icons.delete_outlined,
-                    color: Colors.grey[600],
+                  IconButton(
+                    icon: Icon(
+                      Icons.delete_outlined,
+                      color: Colors.grey[600],
+                    ),
+                    onPressed: () {
+                      deleteUser(itemLista["doc_id"]);
+                    },
                   ),
                 ],
               ),

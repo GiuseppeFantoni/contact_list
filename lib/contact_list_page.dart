@@ -18,16 +18,20 @@ class _ContactListState extends State<ContactList> {
   }
 
   fetchDatabaseList() async {
-    dynamic resultant = await ContactListManager().getListFirebase();
+    dynamic resultant = await ContactListManager().getContactListFirebase();
 
     if (resultant == null) {
       print('Unable to retrieve');
     } else {
       setState(() {
-        print(resultant);
         contactsList = resultant;
       });
     }
+  }
+
+  deleteUser(docId) {
+    ContactListManager().deleteUser(docId);
+    fetchDatabaseList();
   }
 
   @override
@@ -58,7 +62,7 @@ class _ContactListState extends State<ContactList> {
                 );
               },
               isExpanded: item["isExpanded"],
-              body: BodyList(item),
+              body: BodyList(item, deleteUser),
             );
           }).toList(),
         )
