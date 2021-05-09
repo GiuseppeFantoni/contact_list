@@ -1,23 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/contact_list_service.dart';
 
 class ContactListManager {
-  Future getListFirebase() async {
-    var list = [];
-    await FirebaseFirestore.instance
-        .collection('contacts')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        list.add({
-          "name": element["name"],
-          "email": element["email"],
-          "endereco": element["endereco"],
-          "cep": element["cep"],
-          "telefone": element["telefone"],
-          "isExpanded": false
-        });
-      });
-    });
-    return list;
+  Future getContactListFirebase() async {
+    return await ContactListService().getContactListFirebase();
+  }
+
+  Future<void> deleteUser(docId) {
+    CollectionReference contacts =
+        FirebaseFirestore.instance.collection('contacts');
+    return contacts
+        .doc(docId)
+        .delete()
+        .then((value) => print("User Deleted"))
+        .catchError((error) => print("Failed to delete user: $error"));
+  }
+
+  Future<void> addUser(contact) {
+    CollectionReference contacts =
+        FirebaseFirestore.instance.collection('contacts');
+
+    return contacts
+        .doc(contact['doc_id'])
+        .set(contact)
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 }

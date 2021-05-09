@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lista_contatos/contact_list_page.dart';
 import 'package:lista_contatos/home_page.dart';
 import 'package:lista_contatos/services/authentication_service.dart';
 import 'package:provider/provider.dart';
