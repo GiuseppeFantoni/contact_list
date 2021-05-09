@@ -26,4 +26,18 @@ class ContactListManager {
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
+
+  Future<void> updateUser(contact, id) {
+    CollectionReference contacts =
+        FirebaseFirestore.instance.collection('contacts');
+
+    print(contact);
+    print(id);
+
+    return contacts
+        .doc(id)
+        .update(contact)
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
 }

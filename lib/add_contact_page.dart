@@ -58,7 +58,7 @@ class _AddContactPageState extends State<AddContactPage> {
               cep: cep.text,
               telefone: telefone.text,
               endereco: endereco.text)
-          .toJson());
+          .toJson(false));
 
       name.clear();
       email.clear();

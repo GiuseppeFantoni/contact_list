@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:lista_contatos/edit_contact_page.dart';
 
 class BodyList extends StatelessWidget {
   final dynamic itemLista;
+  final dynamic fetchDatabaseList;
   final deleteUser;
 
-  BodyList(this.itemLista, this.deleteUser);
+  BodyList(this.itemLista, this.deleteUser, this.fetchDatabaseList);
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +131,15 @@ class BodyList extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFF4e4376),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  EditContactPage(
+                                      docID: itemLista["doc_id"],
+                                      fetchDatabaseList: fetchDatabaseList)));
+                    },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                       child: Text(
