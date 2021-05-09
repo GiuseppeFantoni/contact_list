@@ -52,10 +52,10 @@ class _ContactListState extends State<ContactList> {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     item['name'],
-                    style: GoogleFonts.petrona(
+                    style: GoogleFonts.nunitoSans(
                       textStyle: TextStyle(
                           color: Colors.black,
-                          fontSize: 17,
+                          fontSize: 19,
                           fontWeight: FontWeight.w500),
                     ),
                   ),
