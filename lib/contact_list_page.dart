@@ -62,7 +62,7 @@ class _ContactListState extends State<ContactList> {
                 );
               },
               isExpanded: item["isExpanded"],
-              body: BodyList(item, deleteUser),
+              body: BodyList(item, deleteUser, fetchDatabaseList),
             );
           }).toList(),
         )

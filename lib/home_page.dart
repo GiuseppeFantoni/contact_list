@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) => DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           floatingActionButton: SpeedDial(
             renderOverlay: false,
@@ -67,7 +67,6 @@ class _HomePageState extends State<HomePage> {
               tabs: [
                 Tab(icon: Icon(Icons.menu_book), text: 'Contatos'),
                 Tab(icon: Icon(Icons.add_circle_outline), text: 'Adicionar'),
-                Tab(icon: Icon(Icons.edit_rounded), text: 'Atualizar'),
               ],
             ),
             elevation: 20,
@@ -77,16 +76,8 @@ class _HomePageState extends State<HomePage> {
             children: [
               ContactList(),
               AddContactPage(),
-              buildPage('Profile Page'),
             ],
           ),
-        ),
-      );
-
-  Widget buildPage(String text) => Center(
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 28),
         ),
       );
 }

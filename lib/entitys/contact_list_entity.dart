@@ -24,7 +24,16 @@ class ContactList {
   final String cep;
   final String endereco;
 
-  Map<String, Object> toJson() {
+  Map<String, Object> toJson(isEditing) {
+    if (isEditing) {
+      return {
+        'name': name,
+        'email': email,
+        'telefone': telefone,
+        'cep': cep,
+        'endereco': endereco,
+      };
+    }
     return {
       'name': name,
       'email': email,
