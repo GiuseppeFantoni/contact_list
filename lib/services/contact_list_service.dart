@@ -34,12 +34,12 @@ class ContactListService {
   }
 
   checkresponseItem(item) {
-    var list = {};
-    list['name'] = item["name"];
-    list['email'] = item["email"];
-    list["telefone"] = item["telefone"];
-    list["cep"] = item["cep"];
-    list["endereco"] = item["endereco"];
-    return list;
+    return {
+      "name": item["name"],
+      "email": item["email"],
+      "telefone": item["telefone"],
+      "cep": item["cep"],
+      "endereco": item["endereco"]
+    };
   }
 }
