@@ -192,7 +192,7 @@ class BodyList extends StatelessWidget {
                         padding:
                             const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                         child: Text(
-                          "Exlcuir",
+                          "Excluir",
                           style: GoogleFonts.nunitoSans(
                             textStyle: TextStyle(
                                 color: Colors.white,

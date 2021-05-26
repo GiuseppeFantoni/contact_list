@@ -100,13 +100,18 @@ class _EditContactPageState extends State<EditContactPage> {
       endereco.clear();
       telefone.clear();
 
+      FocusScope.of(context).unfocus();
+
       widget.fetchDatabaseList();
 
       return AwesomeDialog(
         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 5.0),
         dialogBackgroundColor: Colors.white,
         context: context,
-        autoHide: Duration(seconds: 2),
+        btnOkOnPress: () {
+          Navigator.pop(context);
+        },
+        btnOkColor: Color(0xFF4e4376),
         borderSide: BorderSide(color: Colors.grey, width: 0.5),
         width: 400,
         headerAnimationLoop: false,

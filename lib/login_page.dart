@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lista_contatos/home_page.dart';
+import 'package:lista_contatos/create_login_page.dart';
 import 'package:lista_contatos/services/authentication_service.dart';
+import 'package:lista_contatos/shared/utils.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,60 +15,47 @@ class _LoginPageState extends State<LoginPage> {
   var login = '';
   var password = '';
 
-  showAlertDialogError() {
-    if (password != '' && login != '') {
-      login = '';
-      password = '';
-
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => HomePage()));
-
-      FocusScope.of(context).unfocus();
-
-      return AwesomeDialog(
-        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 5.0),
-        dialogBackgroundColor: Colors.white,
-        context: context,
-        autoHide: Duration(seconds: 2),
-        borderSide: BorderSide(color: Colors.grey, width: 0.5),
-        width: 400,
-        headerAnimationLoop: false,
-        animType: AnimType.SCALE,
-        dialogType: DialogType.SUCCES,
-        title: 'Bem vindo!',
-        desc: 'Login feito com sucesso',
-      )..show();
-    }
-
-    return AwesomeDialog(
-      dialogBackgroundColor: Colors.white,
-      context: context,
-      borderSide: BorderSide(color: Colors.grey, width: 0.5),
-      width: 400,
-      buttonsBorderRadius: BorderRadius.all(Radius.circular(8)),
-      headerAnimationLoop: false,
-      animType: AnimType.SCALE,
-      dialogType: DialogType.ERROR,
-      title: 'Aviso',
-      desc: 'Login ou senha invalidos',
-      showCloseIcon: true,
-      btnOkColor: Colors.red[400],
-      btnOkOnPress: () {},
-    )..show();
-  }
-
   @override
   Widget build(BuildContext context) {
+    entrar() async {
+      var response = await context.read<AuthenticationService>().signIn(
+            login: login.trim(),
+            password: password.trim(),
+          );
+
+      var possuiErro = verifyError(response);
+
+      if (possuiErro != '') {
+        return AwesomeDialog(
+          dialogBackgroundColor: Colors.white,
+          context: context,
+          borderSide: BorderSide(color: Colors.grey, width: 0.5),
+          width: 400,
+          buttonsBorderRadius: BorderRadius.all(Radius.circular(8)),
+          headerAnimationLoop: false,
+          animType: AnimType.SCALE,
+          dialogType: DialogType.NO_HEADER,
+          title: 'Aviso',
+          desc: possuiErro,
+          showCloseIcon: true,
+          btnOkColor: Color(0xFF4e4376),
+          btnOkOnPress: () {},
+        )..show();
+      }
+      FocusScope.of(context).unfocus();
+    }
+
     return SafeArea(
       child: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    colorFilter:
-                        ColorFilter.mode(Colors.black26, BlendMode.softLight),
-                    image: AssetImage('assets/images/background2.jpg'))),
+              gradient: LinearGradient(
+                colors: [Color(0xFF2b5876), Color(0xFF4e4376)],
+                begin: Alignment.bottomRight,
+                end: Alignment.topLeft,
+              ),
+            ),
           ),
           Scaffold(
             backgroundColor: Colors.transparent,
@@ -79,17 +67,12 @@ class _LoginPageState extends State<LoginPage> {
                             child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Image(
-                    //   //image: AssetImage('assets/images/loginLogo.png'),
-                    //   width: 100,
-                    //   height: 100,
-                    // ),
                     Text(
-                      "Contatos",
+                      "ContatosApp",
                       style: GoogleFonts.petrona(
                         textStyle: TextStyle(
-                            color: Colors.green,
-                            fontSize: 60,
+                            color: Colors.white,
+                            fontSize: 40,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -104,22 +87,22 @@ class _LoginPageState extends State<LoginPage> {
                       child: Container(
                         height: 48,
                         decoration: BoxDecoration(
-                            color: Colors.green[200],
-                            borderRadius: BorderRadius.circular(20)),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8)),
                         child: TextFormField(
-                            style: (TextStyle(color: Colors.green)),
+                            style: (TextStyle(color: Colors.black54)),
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               prefixIcon: Padding(
                                 padding: EdgeInsets.only(bottom: 5),
                                 child: Icon(
-                                  Icons.person_outline_outlined,
-                                  color: Colors.green,
+                                  Icons.email,
+                                  color: Colors.black54,
                                 ),
                               ),
                               border: InputBorder.none,
-                              hintText: "Email ou Usuarioo",
-                              hintStyle: TextStyle(color: Colors.green),
+                              hintText: "Email",
+                              hintStyle: TextStyle(color: Colors.black54),
                             ),
                             onChanged: (value) {
                               setState(() {
@@ -134,10 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                       child: Container(
                         height: 48,
                         decoration: BoxDecoration(
-                            color: Colors.green[200],
-                            borderRadius: BorderRadius.circular(20)),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8)),
                         child: TextFormField(
-                          style: (TextStyle(color: Colors.green)),
+                          style: (TextStyle(color: Colors.black54)),
                           enableSuggestions: false,
                           autocorrect: false,
                           obscureText: true,
@@ -146,12 +129,12 @@ class _LoginPageState extends State<LoginPage> {
                               padding: EdgeInsets.only(bottom: 5),
                               child: Icon(
                                 Icons.vpn_key_rounded,
-                                color: Colors.green,
+                                color: Colors.black54,
                               ),
                             ),
                             border: InputBorder.none,
                             hintText: "Senha",
-                            hintStyle: TextStyle(color: Colors.green),
+                            hintStyle: TextStyle(color: Colors.black54),
                           ),
                           onChanged: (value) {
                             setState(() {
@@ -162,67 +145,93 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20.0, horizontal: 20.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
                       child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                "Entrar",
-                                style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            ClipOval(
-                              child: Material(
-                                color: Colors.green
-                                    .withOpacity(0.3), // button color
-                                child: InkWell(
-                                  splashColor: Colors.green, // inkwell color
-                                  child: SizedBox(
-                                      width: 52,
-                                      height: 52,
-                                      child: Icon(
-                                        Icons.arrow_forward_rounded,
-                                        color: Colors.green,
-                                      )),
-                                  onTap: () {
-                                    context
-                                        .read<AuthenticationService>()
-                                        .signIn(
-                                          login: login.trim(),
-                                          password: password.trim(),
-                                        );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          "Esqueceu sua senha?",
+                          style: GoogleFonts.nunitoSans(
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                     ),
-                    const Divider(
-                      color: Colors.green,
-                      height: 10,
-                      thickness: 1,
-                      indent: 0,
-                      endIndent: 0,
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
-                      child: Text(
-                        "Clique aqui para criar uma conta.",
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 14,
-                        ),
+                          vertical: 20.0, horizontal: 20.0),
+                      child: Container(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF4e4376),
+                            ),
+                            onPressed: () {
+                              entrar();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  20.0, 10.0, 20.0, 10.0),
+                              child: Text(
+                                "Entrar",
+                                style: GoogleFonts.nunitoSans(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            )),
+                      ),
+                    ),
+                    const Divider(
+                      height: 10,
+                      thickness: 2,
+                      indent: 20,
+                      endIndent: 20,
+                      color: Colors.white,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Nao tem uma conta ainda?",
+                              style: GoogleFonts.nunitoSans(
+                                textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                          new GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          CreateLoginPage()));
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                " Clique aqui",
+                                style: GoogleFonts.nunitoSans(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

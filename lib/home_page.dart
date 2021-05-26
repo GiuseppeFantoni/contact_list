@@ -4,6 +4,7 @@ import 'package:lista_contatos/add_contact_page.dart';
 import 'package:lista_contatos/contact_list_page.dart';
 import 'package:lista_contatos/services/authentication_service.dart';
 import 'package:provider/provider.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +12,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  sair() {
+    return AwesomeDialog(
+      dialogBackgroundColor: Colors.white,
+      context: context,
+      borderSide: BorderSide(color: Colors.grey, width: 0.5),
+      width: 400,
+      buttonsBorderRadius: BorderRadius.all(Radius.circular(8)),
+      headerAnimationLoop: false,
+      animType: AnimType.SCALE,
+      dialogType: DialogType.NO_HEADER,
+      title: 'Aviso',
+      desc: "Você realmente deseja sair?",
+      btnCancelText: "Cancelar",
+      btnOkText: "Sim",
+      showCloseIcon: true,
+      btnCancelOnPress: () {},
+      btnOkColor: Colors.grey,
+      btnCancelColor: Color(0xFF4e4376),
+      btnOkOnPress: () {
+        context.read<AuthenticationService>().signOut();
+      },
+    )..show();
+  }
+
   @override
   Widget build(BuildContext context) => DefaultTabController(
         length: 2,
@@ -29,7 +54,9 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Color(0xFF2b5876),
                 label: 'Sair',
                 labelStyle: TextStyle(fontSize: 18.0),
-                onTap: () => context.read<AuthenticationService>().signOut(),
+                onTap: () {
+                  sair();
+                },
               ),
               SpeedDialChild(
                 child: Icon(

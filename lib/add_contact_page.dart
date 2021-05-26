@@ -66,6 +66,8 @@ class _AddContactPageState extends State<AddContactPage> {
       endereco.clear();
       telefone.clear();
 
+      FocusScope.of(context).unfocus();
+
       return AwesomeDialog(
         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 5.0),
         dialogBackgroundColor: Colors.white,
