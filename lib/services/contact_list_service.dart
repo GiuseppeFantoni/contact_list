@@ -15,13 +15,18 @@ class ContactListService {
     var list = [];
     if (response.length == 0) return [];
     response.forEach((element) {
+      print(element);
       list.add({
         "name": element["name"],
         "email": element["email"],
-        "endereco": element["endereco"],
+        "logradouro": element["logradouro"],
         "cep": element["cep"],
         "telefone": element["telefone"],
         "doc_id": element["doc_id"],
+        "numeroLogradouro": element["numeroLogradouro"],
+        "cidade": element["cidade"],
+        "bairro": element["bairro"],
+        "complemento": element["complemento"],
         "isExpanded": false
       });
     });
@@ -34,12 +39,17 @@ class ContactListService {
   }
 
   checkresponseItem(item) {
+    print(item);
     return {
       "name": item["name"],
       "email": item["email"],
       "telefone": item["telefone"],
       "cep": item["cep"],
-      "endereco": item["endereco"]
+      "logradouro": item["logradouro"],
+      "numeroLogradouro": item["numeroLogradouro"],
+      "cidade": item["cidade"],
+      "bairro": item["bairro"],
+      "complemento": item["complemento"]
     };
   }
 }

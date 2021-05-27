@@ -99,7 +99,7 @@ class BodyList extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    "Endereço:",
+                    "End:",
                     style: GoogleFonts.nunitoSans(
                       textStyle: TextStyle(
                           color: Colors.black,
@@ -107,15 +107,32 @@ class BodyList extends StatelessWidget {
                           fontWeight: FontWeight.w500),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
-                    child: Text(
-                      itemLista['endereco'],
-                      style: GoogleFonts.nunitoSans(
-                        textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            itemLista['logradouro'],
+                            style: GoogleFonts.nunitoSans(
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          Flexible(
+                            child: Text(
+                              " " + itemLista['numeroLogradouro'],
+                              style: GoogleFonts.nunitoSans(
+                                textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -139,6 +156,93 @@ class BodyList extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
                     child: Text(
                       itemLista['cep'],
+                      style: GoogleFonts.nunitoSans(
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            itemLista['complemento'] != null
+                ? Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Complemento:",
+                          style: GoogleFonts.nunitoSans(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
+                          child: Text(
+                            itemLista['complemento'],
+                            style: GoogleFonts.nunitoSans(
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+              child: Row(
+                children: [
+                  Text(
+                    "Bairro:",
+                    style: GoogleFonts.nunitoSans(
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
+                    child: Text(
+                      itemLista['bairro'],
+                      style: GoogleFonts.nunitoSans(
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+              child: Row(
+                children: [
+                  Text(
+                    "Cidade:",
+                    style: GoogleFonts.nunitoSans(
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
+                    child: Text(
+                      itemLista['cidade'],
                       style: GoogleFonts.nunitoSans(
                         textStyle: TextStyle(
                             color: Colors.black,

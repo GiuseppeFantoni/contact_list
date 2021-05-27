@@ -2,12 +2,17 @@ import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 class ContactList {
-  ContactList(
-      {@required this.name,
-      @required this.email,
-      @required this.telefone,
-      @required this.cep,
-      @required this.endereco});
+  ContactList({
+    @required this.name,
+    @required this.email,
+    @required this.telefone,
+    @required this.cep,
+    @required this.logradouro,
+    @required this.numeroLogradouro,
+    @required this.bairro,
+    @required this.cidade,
+    this.complemento,
+  });
 
   ContactList.fromJson(Map<String, Object> json)
       : this(
@@ -15,14 +20,22 @@ class ContactList {
           email: json['email'] as String,
           telefone: json['telefone'] as String,
           cep: json['cep'] as String,
-          endereco: json['endereco'] as String,
+          logradouro: json['endereco'] as String,
+          numeroLogradouro: json["numeroLogradouro"] as String,
+          bairro: json["bairro"] as String,
+          cidade: json["cidade"] as String,
+          complemento: json["complemento"] as String,
         );
 
   final String name;
   final String email;
   final String telefone;
   final String cep;
-  final String endereco;
+  final String logradouro;
+  final String numeroLogradouro;
+  final String bairro;
+  final String cidade;
+  final String complemento;
 
   Map<String, Object> toJson(isEditing) {
     if (isEditing) {
@@ -31,7 +44,11 @@ class ContactList {
         'email': email,
         'telefone': telefone,
         'cep': cep,
-        'endereco': endereco,
+        'logradouro': logradouro,
+        'numeroLogradouro': numeroLogradouro,
+        'bairro': bairro,
+        'cidade': cidade,
+        "complemento": complemento
       };
     }
     return {
@@ -39,7 +56,11 @@ class ContactList {
       'email': email,
       'telefone': telefone,
       'cep': cep,
-      'endereco': endereco,
+      'logradouro': logradouro,
+      'numeroLogradouro': numeroLogradouro,
+      'bairro': bairro,
+      'cidade': cidade,
+      'complemento': complemento,
       "doc_id": Uuid().v4()
     };
   }
