@@ -102,22 +102,25 @@ class _CreateLoginPageState extends State<CreateLoginPage> {
             body: Column(
               children: [
                 Flexible(
-                    child: Center(
-                        child: Container(
-                            child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "ContatosApp",
-                      style: GoogleFonts.petrona(
-                        textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold),
+                  child: Center(
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "ContatosApp",
+                            style: GoogleFonts.petrona(
+                              textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                )))),
+                  ),
+                ),
                 Container(
                     child: Column(
                   children: [

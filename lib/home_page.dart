@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:lista_contatos/add_contact_page.dart';
+import 'package:lista_contatos/add_events_page.dart';
 import 'package:lista_contatos/contact_list_page.dart';
 import 'package:lista_contatos/services/authentication_service.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           floatingActionButton: SpeedDial(
             renderOverlay: false,
@@ -94,6 +95,7 @@ class _HomePageState extends State<HomePage> {
               tabs: [
                 Tab(icon: Icon(Icons.menu_book), text: 'Contatos'),
                 Tab(icon: Icon(Icons.add_circle_outline), text: 'Adicionar'),
+                Tab(icon: Icon(Icons.event), text: 'Eventos'),
               ],
             ),
             elevation: 20,
@@ -103,6 +105,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               ContactList(),
               AddContactPage(),
+              AddEventPage(),
             ],
           ),
         ),
