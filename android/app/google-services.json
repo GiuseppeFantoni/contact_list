@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:119739706908:android:06b674660d3e971b2eb9d9",
         "android_client_info": {
-          "package_name": "io.contactlist.withfirebase"
+          "package_name": "io.contactlist.withfirebase2"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "119739706908-ok8j3n5vidfqvbhl5girn4t487qmb1iu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "io.contactlist.withfirebase",
+            "package_name": "io.contactlist.withfirebase2",
             "certificate_hash": "82d64cc089101cc73265daadccfe356cbf216fde"
           }
         },

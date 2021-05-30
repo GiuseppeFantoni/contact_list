@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.contactlist.withfirebase">
+    package="io.contactlist.withfirebase2">
    <application
         android:label="lista_contatos"
         android:icon="@mipmap/ic_launcher">
