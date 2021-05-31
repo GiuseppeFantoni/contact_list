@@ -5,6 +5,12 @@ import 'package:lista_contatos/manager/contact_list_manager.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:lista_contatos/services/via_cep_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+
+import 'dart:io';
 
 class EditContactPage extends StatefulWidget {
   final String docID;
@@ -28,6 +34,9 @@ class _EditContactPageState extends State<EditContactPage> {
   var bairro = TextEditingController(text: '');
   var cidade = TextEditingController(text: '');
   var complemento = TextEditingController(text: '');
+  var dataAniversario = TextEditingController(text: '');
+  String urlImage = '';
+  File profilePicture;
 
   @override
   void initState() {
@@ -91,7 +100,25 @@ class _EditContactPageState extends State<EditContactPage> {
     return false;
   }
 
-  adicionarContato() {
+  Future upload() async {
+    String fileName = path.basename(profilePicture.path);
+    Reference firebaseStorage =
+        FirebaseStorage.instance.ref().child('uploads/$fileName');
+    UploadTask uploadTask = firebaseStorage.putFile(profilePicture);
+    await uploadTask.then(
+      (value) async {
+        await value.ref.getDownloadURL().then((url) {
+          this.urlImage = url;
+        });
+      },
+    );
+  }
+
+  Future adicionarContato() async {
+    if (profilePicture != null) {
+      await upload();
+    }
+
     if (name.text != '' &&
         validatePhoneNumber(telefone.text) &&
         EmailValidator.validate(email.text) &&
@@ -99,16 +126,18 @@ class _EditContactPageState extends State<EditContactPage> {
         logradouro.text != '') {
       ContactListManager().updateUser(
           ContactList(
-                  name: name.text,
-                  email: email.text,
-                  cep: cep.text,
-                  telefone: telefone.text,
-                  logradouro: logradouro.text,
-                  numeroLogradouro: numeroLogradouro.text,
-                  bairro: bairro.text,
-                  cidade: cidade.text,
-                  complemento: complemento.text == '' ? null : complemento.text)
-              .toJson(true),
+            name: name.text,
+            email: email.text,
+            cep: cep.text,
+            telefone: telefone.text,
+            logradouro: logradouro.text,
+            numeroLogradouro: numeroLogradouro.text,
+            bairro: bairro.text,
+            cidade: cidade.text,
+            complemento: complemento.text == '' ? null : complemento.text,
+            urlImage: urlImage,
+            birthday: dataAniversario.text,
+          ).toJson(true),
           widget.docID);
 
       name.clear();
@@ -254,6 +283,55 @@ class _EditContactPageState extends State<EditContactPage> {
                   ],
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 210,
+                    padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 7.0),
+                    child: TextFormField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Aniversário',
+                          border: OutlineInputBorder(),
+                          suffixIcon: Icon(Icons.hourglass_top),
+                        ),
+                        controller: dataAniversario,
+                        onTap: () async {
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                          DateTime date = DateTime(1921);
+                          date = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1921),
+                              lastDate: DateTime(2100));
+
+                          dataAniversario.text =
+                              new DateFormat('dd/MM').format(date);
+                        }),
+                  ),
+                  Container(
+                    width: 135,
+                    height: 59,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF4e4376),
+                          textStyle: TextStyle(
+                              fontSize: 16, fontStyle: FontStyle.italic),
+                        ),
+                        child: Text("Foto",
+                            style:
+                                TextStyle(fontSize: 20, color: Colors.white)),
+                        onPressed: () async {
+                          final file = await ImagePicker()
+                              .getImage(source: ImageSource.gallery);
+                          setState(() {
+                            profilePicture = File(file.path);
+                          });
+                        }),
+                  ),
+                ],
+              ),
               Container(
                 padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 7.0),
                 child: TextFormField(
@@ -373,7 +451,9 @@ class _EditContactPageState extends State<EditContactPage> {
                   ),
                 ),
               ),
-              Padding(
+              Container(
+                width: 200,
+                height: 59,
                 padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -384,7 +464,7 @@ class _EditContactPageState extends State<EditContactPage> {
                     onPressed: () {
                       adicionarContato();
                     },
-                    child: Text("Atualizar Contato")),
+                    child: Text("Adicionar Contato")),
               ),
             ],
           ),

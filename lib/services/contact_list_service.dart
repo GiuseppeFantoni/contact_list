@@ -27,6 +27,8 @@ class ContactListService {
         "cidade": element["cidade"],
         "bairro": element["bairro"],
         "complemento": element["complemento"],
+        "urlImage": element["urlImage"],
+        "birthday": element["birthday"],
         "isExpanded": false
       });
     });
@@ -49,7 +51,9 @@ class ContactListService {
       "numeroLogradouro": item["numeroLogradouro"],
       "cidade": item["cidade"],
       "bairro": item["bairro"],
-      "complemento": item["complemento"]
+      "complemento": item["complemento"],
+      "urlImage": item["urlImage"],
+      "birthday": item["birthday"]
     };
   }
 }

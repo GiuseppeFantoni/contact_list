@@ -3,7 +3,8 @@ import 'package:lista_contatos/models/result_cep.dart';
 
 class ViaCepService {
   static Future<ResultCep> fetchCep({String cep}) async {
-    final response = await http.get('https://viacep.com.br/ws/$cep/json/');
+    final response =
+        await http.get(Uri.parse('https://viacep.com.br/ws/$cep/json/'));
     if (response.statusCode == 200) {
       return ResultCep.fromJson(response.body);
     } else {

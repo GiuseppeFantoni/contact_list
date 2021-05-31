@@ -12,6 +12,8 @@ class ContactList {
     @required this.bairro,
     @required this.cidade,
     this.complemento,
+    this.urlImage,
+    this.birthday,
   });
 
   ContactList.fromJson(Map<String, Object> json)
@@ -25,6 +27,8 @@ class ContactList {
           bairro: json["bairro"] as String,
           cidade: json["cidade"] as String,
           complemento: json["complemento"] as String,
+          urlImage: json["urlImage"] as String,
+          birthday: json["birthday"] as String,
         );
 
   final String name;
@@ -36,6 +40,8 @@ class ContactList {
   final String bairro;
   final String cidade;
   final String complemento;
+  final String urlImage;
+  final String birthday;
 
   Map<String, Object> toJson(isEditing) {
     if (isEditing) {
@@ -48,7 +54,9 @@ class ContactList {
         'numeroLogradouro': numeroLogradouro,
         'bairro': bairro,
         'cidade': cidade,
-        "complemento": complemento
+        "complemento": complemento,
+        "urlImage": urlImage,
+        "birthday": birthday,
       };
     }
     return {
@@ -61,6 +69,8 @@ class ContactList {
       'bairro': bairro,
       'cidade': cidade,
       'complemento': complemento,
+      "urlImage": urlImage,
+      "birthday": birthday,
       "doc_id": Uuid().v4()
     };
   }

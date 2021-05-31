@@ -4,7 +4,13 @@ import 'package:lista_contatos/entitys/contact_list_entity.dart';
 import 'package:lista_contatos/manager/contact_list_manager.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:intl/intl.dart';
 import 'package:lista_contatos/services/via_cep_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+
+import 'dart:io';
 
 class AddContactPage extends StatefulWidget {
   @override
@@ -21,6 +27,9 @@ class _AddContactPageState extends State<AddContactPage> {
   var complemento = TextEditingController(text: '');
   var bairro = TextEditingController(text: '');
   var cidade = TextEditingController(text: '');
+  var dataAniversario = TextEditingController(text: '');
+  String urlImage = '';
+  File profilePicture;
 
   @override
   void dispose() {
@@ -55,7 +64,11 @@ class _AddContactPageState extends State<AddContactPage> {
     return false;
   }
 
-  adicionarContato() {
+  Future adicionarContato() async {
+    if (profilePicture != null) {
+      await upload();
+    }
+
     if (name.text != '' &&
         validatePhoneNumber(telefone.text) &&
         EmailValidator.validate(email.text) &&
@@ -73,6 +86,8 @@ class _AddContactPageState extends State<AddContactPage> {
         bairro: bairro.text,
         cidade: cidade.text,
         complemento: complemento.text == '' ? null : complemento.text,
+        urlImage: urlImage,
+        birthday: dataAniversario.text,
       ).toJson(false));
 
       name.clear();
@@ -150,6 +165,20 @@ class _AddContactPageState extends State<AddContactPage> {
     });
   }
 
+  Future upload() async {
+    String fileName = path.basename(profilePicture.path);
+    Reference firebaseStorage =
+        FirebaseStorage.instance.ref().child('uploads/$fileName');
+    UploadTask uploadTask = firebaseStorage.putFile(profilePicture);
+    await uploadTask.then(
+      (value) async {
+        await value.ref.getDownloadURL().then((url) {
+          this.urlImage = url;
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -196,6 +225,53 @@ class _AddContactPageState extends State<AddContactPage> {
                   ),
                 ],
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 210,
+                  padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 7.0),
+                  child: TextFormField(
+                      controller: dataAniversario,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: 'Aniversário',
+                        border: OutlineInputBorder(),
+                        suffixIcon: Icon(Icons.hourglass_top),
+                      ),
+                      onTap: () async {
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        DateTime date = DateTime(1921);
+                        date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1921),
+                            lastDate: DateTime(2100));
+                        dataAniversario.text =
+                            new DateFormat('dd/MM').format(date);
+                      }),
+                ),
+                Container(
+                  width: 135,
+                  height: 59,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF4e4376),
+                        textStyle: TextStyle(
+                            fontSize: 16, fontStyle: FontStyle.italic),
+                      ),
+                      child: Text("Foto",
+                          style: TextStyle(fontSize: 20, color: Colors.white)),
+                      onPressed: () async {
+                        final file = await ImagePicker()
+                            .getImage(source: ImageSource.gallery);
+                        setState(() {
+                          profilePicture = File(file.path);
+                        });
+                      }),
+                ),
+              ],
             ),
             Container(
               padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 7.0),
@@ -316,7 +392,9 @@ class _AddContactPageState extends State<AddContactPage> {
                 ),
               ),
             ),
-            Padding(
+            Container(
+              width: 200,
+              height: 59,
               padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

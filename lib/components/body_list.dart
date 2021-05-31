@@ -71,6 +71,34 @@ class BodyList extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
+                    "Aniversário:",
+                    style: GoogleFonts.nunitoSans(
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
+                    child: Text(
+                      itemLista['birthday'],
+                      style: GoogleFonts.nunitoSans(
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+              child: Row(
+                children: [
+                  Text(
                     "Email:",
                     style: GoogleFonts.nunitoSans(
                       textStyle: TextStyle(

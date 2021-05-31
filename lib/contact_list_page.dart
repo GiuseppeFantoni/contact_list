@@ -49,15 +49,36 @@ class _ContactListState extends State<ContactList> {
             return ExpansionPanel(
               headerBuilder: (BuildContext context, bool isExpanded) {
                 return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    item['name'],
-                    style: GoogleFonts.nunitoSans(
-                      textStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 19,
-                          fontWeight: FontWeight.w500),
-                    ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      item['urlImage'] != '' && item['urlImage'] != null
+                          ? Container(
+                              width: 55.0,
+                              height: 55.0,
+                              child: FadeInImage.assetNetwork(
+                                  placeholder: 'images/profile.jpg',
+                                  image: item['urlImage']),
+                            )
+                          : Container(
+                              width: 55.0,
+                              height: 55.0,
+                              child: Image(
+                                  image: AssetImage("images/profile.jpg")),
+                            ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+                        child: Text(
+                          item['name'],
+                          style: GoogleFonts.nunitoSans(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 19,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },
