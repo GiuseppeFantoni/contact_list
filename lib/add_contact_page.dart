@@ -27,7 +27,8 @@ class _AddContactPageState extends State<AddContactPage> {
   var complemento = TextEditingController(text: '');
   var bairro = TextEditingController(text: '');
   var cidade = TextEditingController(text: '');
-  var dataAniversario = TextEditingController(text: '');
+  var dataAniversario = TextEditingController();
+  var data = TextEditingController();
   String urlImage = '';
   File profilePicture;
 
@@ -42,6 +43,7 @@ class _AddContactPageState extends State<AddContactPage> {
     cidade.dispose();
     telefone.dispose();
     complemento.dispose();
+    dataAniversario.dispose();
     super.dispose();
   }
 
@@ -66,7 +68,9 @@ class _AddContactPageState extends State<AddContactPage> {
 
   Future adicionarContato() async {
     if (profilePicture != null) {
+      showLoaderDialog(context);
       await upload();
+      Navigator.pop(context);
     }
 
     if (name.text != '' &&
@@ -99,6 +103,7 @@ class _AddContactPageState extends State<AddContactPage> {
       bairro.clear();
       cidade.clear();
       telefone.clear();
+      dataAniversario.clear();
 
       FocusScope.of(context).unfocus();
 
@@ -179,6 +184,29 @@ class _AddContactPageState extends State<AddContactPage> {
     );
   }
 
+  showLoaderDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: new Row(
+        children: [
+          CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF4e4376)),
+          ),
+          Container(
+              padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+              margin: EdgeInsets.only(left: 7),
+              child: Text("Loading...")),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -188,42 +216,36 @@ class _AddContactPageState extends State<AddContactPage> {
           children: [
             Container(
               padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 7.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 190,
-                    child: TextFormField(
-                      controller: name,
-                      decoration: InputDecoration(
-                        labelText: 'Nome',
-                        border: OutlineInputBorder(),
-                        suffixIcon: Icon(
-                          Icons.person,
-                        ),
-                      ),
+              child: Container(
+                child: TextFormField(
+                  controller: name,
+                  decoration: InputDecoration(
+                    labelText: 'Nome',
+                    border: OutlineInputBorder(),
+                    suffixIcon: Icon(
+                      Icons.person,
                     ),
                   ),
-                  Container(
-                    width: 155,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      validator: (telefone) => validatePhoneNumberForm(telefone)
-                          ? null
-                          : "Telefone inválido",
-                      controller: telefone,
-                      decoration: InputDecoration(
-                        labelText: 'Telefone',
-                        border: OutlineInputBorder(),
-                        suffixIcon: Icon(Icons.phone),
-                      ),
-                    ),
-                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 7.0),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
                 ],
+                validator: (telefone) => validatePhoneNumberForm(telefone)
+                    ? null
+                    : "Telefone inválido",
+                controller: telefone,
+                decoration: InputDecoration(
+                  labelText: 'Telefone',
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.phone),
+                ),
               ),
             ),
             Row(

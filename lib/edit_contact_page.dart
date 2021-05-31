@@ -65,6 +65,8 @@ class _EditContactPageState extends State<EditContactPage> {
     bairro.text = contact["bairro"];
     cidade.text = contact["cidade"];
     complemento.text = contact['complemento'];
+    dataAniversario.text = contact["birthday"];
+    this.urlImage = contact["urlImage"];
   }
 
   @override
@@ -78,6 +80,7 @@ class _EditContactPageState extends State<EditContactPage> {
     cidade.dispose();
     numeroLogradouro.dispose();
     complemento.dispose();
+    dataAniversario.dispose();
     super.dispose();
   }
 
@@ -116,7 +119,9 @@ class _EditContactPageState extends State<EditContactPage> {
 
   Future adicionarContato() async {
     if (profilePicture != null) {
+      showLoaderDialog(context);
       await upload();
+      Navigator.pop(context);
     }
 
     if (name.text != '' &&
@@ -149,6 +154,7 @@ class _EditContactPageState extends State<EditContactPage> {
       logradouro.clear();
       numeroLogradouro.clear();
       telefone.clear();
+      dataAniversario.clear();
 
       FocusScope.of(context).unfocus();
 
@@ -184,6 +190,29 @@ class _EditContactPageState extends State<EditContactPage> {
           desc: 'Verifique se todos os dados estão preenchidos corretamente')
         ..show();
     }
+  }
+
+  showLoaderDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: new Row(
+        children: [
+          CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF4e4376)),
+          ),
+          Container(
+              padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+              margin: EdgeInsets.only(left: 7),
+              child: Text("Loading...")),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   Future _searchCep() async {
@@ -244,43 +273,34 @@ class _EditContactPageState extends State<EditContactPage> {
             children: [
               Container(
                 padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 7.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 190,
-                      child: TextFormField(
-                        controller: name,
-                        decoration: InputDecoration(
-                          labelText: 'Nome',
-                          border: OutlineInputBorder(),
-                          suffixIcon: Icon(
-                            Icons.person,
-                          ),
-                        ),
-                      ),
+                child: TextFormField(
+                  controller: name,
+                  decoration: InputDecoration(
+                    labelText: 'Nome',
+                    border: OutlineInputBorder(),
+                    suffixIcon: Icon(
+                      Icons.person,
                     ),
-                    Container(
-                      width: 155,
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        validator: (telefone) =>
-                            validatePhoneNumberForm(telefone)
-                                ? null
-                                : "Telefone inválido",
-                        controller: telefone,
-                        decoration: InputDecoration(
-                          labelText: 'Telefone',
-                          border: OutlineInputBorder(),
-                          suffixIcon: Icon(Icons.phone),
-                        ),
-                      ),
-                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 7.0),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
                   ],
+                  validator: (telefone) => validatePhoneNumberForm(telefone)
+                      ? null
+                      : "Telefone inválido",
+                  controller: telefone,
+                  decoration: InputDecoration(
+                    labelText: 'Telefone',
+                    border: OutlineInputBorder(),
+                    suffixIcon: Icon(Icons.phone),
+                  ),
                 ),
               ),
               Row(
@@ -464,7 +484,7 @@ class _EditContactPageState extends State<EditContactPage> {
                     onPressed: () {
                       adicionarContato();
                     },
-                    child: Text("Adicionar Contato")),
+                    child: Text("Atualizar Contato")),
               ),
             ],
           ),
